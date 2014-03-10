@@ -17,8 +17,8 @@ cabal-version:       >=1.8
 
 Test-Suite SpecPokerHand
     type:       exitcode-stdio-1.0
-    main-is:    test/SpecPokerHand.hs 
-    build-depends:       base ==4.6.*, hspec ==1.8.*, QuickCheck ==2.6.*
+    main-is:    Spec.hs 
+    build-depends: base ==4.6.*, hspec ==1.8.*, QuickCheck ==2.6.*, hspec-discover
 
 library
   exposed-modules:     Pokerhand
