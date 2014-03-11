@@ -1,7 +1,7 @@
 hspoker
 =======
-Branch master: [![Build Status](https://travis-ci.org/wouteroostervld/hspoker.png?branch=master)](https://travis-ci.org/wouteroostervld/hspoker)
+[![Build Status](https://travis-ci.org/wouteroostervld/hspoker.png?branch=master)](https://travis-ci.org/wouteroostervld/hspoker) master
 
-Branch development: [![Build Status](https://travis-ci.org/wouteroostervld/hspoker.png?branch=development)](https://travis-ci.org/wouteroostervld/hspoker)
+[![Build Status](https://travis-ci.org/wouteroostervld/hspoker.png?branch=development)](https://travis-ci.org/wouteroostervld/hspoker) development
 
 poker library/tools in haskell
