@@ -2,6 +2,7 @@ import Test.Hspec
 import Test.QuickCheck
 import Control.Exception (evaluate)
 import Pokerhand
+import Data.Maybe
 
 main :: IO()
 main = hspec $ do
@@ -22,11 +23,11 @@ main = hspec $ do
         it "returns Club for Card Ace Clubs" $ do
             suit ( Card Ace Clubs ) `shouldBe` Clubs
 
-    describe "Suit" $ do
+    describe "showSuit" $ do
         it "shows the right string for every suit" $ do
             map (showSuit) [ Clubs, Diamonds, Spades, Hearts ] `shouldBe` [ "c", "d", "s", "h" ]
 
-    describe "Card" $ do
+    describe "showCard" $ do
         it "shows Ac for Card Ace Clubs" $ do
             showCard ( Card Ace Clubs ) `shouldBe` "Ac"
 
@@ -44,4 +45,7 @@ main = hspec $ do
 
     describe "suitFromString" $ do
         it "should return the right type" $ do
-            map (suitFromString) [ "c", "d", "h", "s" ] `shouldBe` [ Clubs, Diamonds, Hearts, Spades ] 
+            map ( fromJust . suitFromString ) [ "c", "d", "h", "s" ] `shouldBe` [ Clubs, Diamonds, Hearts, Spades ] 
+
+        it "should return Nothing for non-existent suit" $ do
+            suitFromString "x" `shouldBe` Nothing

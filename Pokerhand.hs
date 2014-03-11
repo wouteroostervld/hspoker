@@ -1,4 +1,5 @@
 module Pokerhand where
+import Data.Maybe
 
 data Rank = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace  deriving (Enum, Eq, Ord, Show)
 data Suit = Clubs | Hearts | Diamonds | Spades deriving (Enum,Eq,Show)
@@ -28,7 +29,8 @@ showRank Ace = "A"
 
 showCard (Card r s ) = showRank r ++ showSuit s
 
-suitFromString "s" = Spades
-suitFromString "c" = Clubs
-suitFromString "d" = Diamonds
-suitFromString "h" = Hearts
+suitFromString "s" = Just Spades
+suitFromString "c" = Just Clubs
+suitFromString "d" = Just Diamonds
+suitFromString "h" = Just Hearts
+suitFromString _ = Nothing 
