@@ -17,7 +17,7 @@ main = hspec $ do
     describe "showRank" $ do
         it "shows the right string for every rank" $ do
             map (showRank) [ Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace ] `shouldBe`
-                [ "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A" ] 
+                [ '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A' ] 
 
     describe "suit" $ do
         it "returns Club for Card Ace Clubs" $ do
@@ -25,7 +25,7 @@ main = hspec $ do
 
     describe "showSuit" $ do
         it "shows the right string for every suit" $ do
-            map (showSuit) [ Clubs, Diamonds, Spades, Hearts ] `shouldBe` [ "c", "d", "s", "h" ]
+            map (showSuit) [ Clubs, Diamonds, Spades, Hearts ] `shouldBe` [ 'c', 'd', 's', 'h' ]
 
     describe "showCard" $ do
         it "shows Ac for Card Ace Clubs" $ do
@@ -40,12 +40,12 @@ main = hspec $ do
         it "showCard 2s for Card Two Spades" $ do
             showCard ( Card Two Spades ) `shouldBe` "2s"
 
-        it "shows (showRank r ++ showSuit s ) for arbitrary Card r s" $ do
-            [ showRank r ++ showSuit s | r <- [ Two .. ], s <- [ Clubs .. ] ] `shouldBe` [ showCard ( Card r s )| r <- [ Two .. ], s <- [ Clubs .. ] ]
+        it "shows (showRank r : showSuit s : [] ) for arbitrary Card r s" $ do
+            [ showRank r : showSuit s : [] | r <- [ Two .. ], s <- [ Clubs .. ] ] `shouldBe` [ showCard ( Card r s )| r <- [ Two .. ], s <- [ Clubs .. ] ]
 
     describe "suitFromString" $ do
         it "should return the right type" $ do
-            map ( fromJust . suitFromString ) [ "c", "d", "h", "s" ] `shouldBe` [ Clubs, Diamonds, Hearts, Spades ] 
+            map ( fromJust . suitFromChar ) [ 'c', 'd', 'h', 's' ] `shouldBe` [ Clubs, Diamonds, Hearts, Spades ] 
 
         it "should return Nothing for non-existent suit" $ do
-            suitFromString "x" `shouldBe` Nothing
+            suitFromChar 'x' `shouldBe` Nothing
