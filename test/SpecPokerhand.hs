@@ -1,7 +1,7 @@
 import Test.Hspec
 import Test.QuickCheck
 import Control.Exception (evaluate)
-import Pokerhand
+import HSPoker.Card
 import Data.Maybe
 
 main :: IO()

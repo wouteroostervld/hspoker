@@ -1,4 +1,4 @@
-module Pokerhand where
+module HSPoker.Card where
 import Data.Maybe
 
 data Rank = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace  deriving (Enum, Eq, Ord, Show)

@@ -21,6 +21,6 @@ Test-Suite SpecPokerHand
     build-depends: base ==4.6.*, hspec ==1.8.*, QuickCheck ==2.6.*, hspec-discover
 
 library
-  exposed-modules:     Pokerhand
+  exposed-modules:     HSPoker.Card 
   -- other-modules:       
   build-depends:       base ==4.6.*, hspec ==1.8.*, QuickCheck ==2.6.*
