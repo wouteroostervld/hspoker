@@ -43,9 +43,28 @@ main = hspec $ do
         it "shows (showRank r : showSuit s : [] ) for arbitrary Card r s" $ do
             [ showRank r : showSuit s : [] | r <- [ Two .. ], s <- [ Clubs .. ] ] `shouldBe` [ showCard ( Card r s )| r <- [ Two .. ], s <- [ Clubs .. ] ]
 
-    describe "suitFromString" $ do
+    describe "suitFromChar" $ do
         it "should return the right type" $ do
             map ( fromJust . suitFromChar ) [ 'c', 'd', 'h', 's' ] `shouldBe` [ Clubs, Diamonds, Hearts, Spades ] 
 
         it "should return Nothing for non-existent suit" $ do
             suitFromChar 'x' `shouldBe` Nothing
+
+    describe "rankFromChar" $ do
+        it "should return correspondent rank for char" $ do
+            map (fromJust . rankFromChar . showRank) [Two ..] `shouldBe` [Two ..]
+        
+    describe "cardFromString" $ do
+        it "should return correspondent card for string" $ do
+            map (fromJust . fst . cardFromString . showCard) cards `shouldBe` cards
+
+    describe "cardsFromString" $ do
+        it "should return correspondent cards for string" $ do
+            fst ( cardsFromString ( concat ( map (showCard) cards ) ) ) `shouldBe`  cards
+
+        it "should be able to handle empty strings" $ do
+            cardsFromString "" `shouldBe` ( [], "" )
+            
+        it "should be able to handle odd strings" $ do
+            cardsFromString "AcK" `shouldBe` ( [Card Ace Clubs], "K" )
+
