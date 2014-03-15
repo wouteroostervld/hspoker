@@ -33,7 +33,7 @@ suitFromChar 's' = Just Spades
 suitFromChar 'c' = Just Clubs
 suitFromChar 'd' = Just Diamonds
 suitFromChar 'h' = Just Hearts
-suitFromChar _ = Nothing 
+suitFromChar _ = Nothing
 
 rankFromChar '2' = Just Two
 rankFromChar '3' = Just Three
@@ -48,20 +48,20 @@ rankFromChar 'J' = Just Jack
 rankFromChar 'Q' = Just Queen
 rankFromChar 'K' = Just King
 rankFromChar 'A' = Just Ace
-rankFromChar _ = Nothing 
+rankFromChar _ = Nothing
 
 cardFromString ([]) = ( Nothing, [] )
 cardFromString (a:[]) = ( Nothing, [a] )
-cardFromString (a:b:xs) 
+cardFromString (a:b:xs)
     | isJust r && isJust s = ( Just ( Card (fromJust r) (fromJust s)), xs)
     | otherwise = ( Nothing, a : b : xs )
     where r = rankFromChar a
-          s = suitFromChar b 
+          s = suitFromChar b
 
 cardsFromString_ a b
     | card == Nothing = ( a, remaining )
     | remaining == [] = ( a ++ [fromJust card], remaining )
-    | otherwise = cardsFromString_ ( a ++ [fromJust card]) remaining 
+    | otherwise = cardsFromString_ ( a ++ [fromJust card]) remaining
     where result = cardFromString b
           card = fst result
           remaining = snd result
