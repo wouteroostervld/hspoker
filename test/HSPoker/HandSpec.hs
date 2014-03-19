@@ -33,3 +33,7 @@ spec = do
             fmap (sort) (handsFromRange "AK") `shouldBe` Just (sort $ filterAllHands Ace King)
         it "should return all the combinations for the string \"AA\"" $ do
             fmap (sort) (handsFromRange "AA") `shouldBe` Just (sort $ filterAllHands Ace Ace)
+
+        it "should return nothing for an illegal string \"gg\"" $ do
+            handsFromRange "gg" `shouldBe` Nothing 
+

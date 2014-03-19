@@ -8,5 +8,11 @@ handFromString s | length cards == 2 = Just cards
 
 allhands = [ [c1,c2] | c1 <- cards, c2 <- cards, c1 > c2 ]
 
-handsFromRange "AK" = Just [ [Card Ace s1, Card King s2] | s1 <- [ Clubs .. ], s2 <- [ Clubs ..] ] 
-handsFromRange "AA" = Just [ [Card Ace s1, Card Ace s2] | s1 <- [ Clubs .. ], s2 <- [ Clubs ..], s1 > s2 ] 
+handHasRanks r1 r2 h = (rank (h!!0) == r1) && (rank (h!!1) == r2) 
+handsFromRange (x:y:xs) | test = Just $ filter (handHasRanks (fromJust rank1) (fromJust rank2)) allhands
+                        | otherwise = Nothing
+                where   rank1 = rankFromChar x
+                        rank2 = rankFromChar y
+                        test = isJust rank1 && isJust rank2 && rank1 >= rank2
+
+
