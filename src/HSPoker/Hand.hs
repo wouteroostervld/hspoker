@@ -15,11 +15,17 @@ filterOnRankSecond r l = filterOnRank 1 r l
 
 handsFromRange [] = Nothing
 handsFromRange (x:[]) = Nothing
-handsFromRange (x:y:xs) | test = Just $ filterOnRankSecond (fromJust rank2) $ filterOnRankFirst (fromJust rank1) allhands
-                        | isJust rank1 && y == 'X' = Just $ filterOnRankFirst (fromJust rank1) allhands
-                        | isJust rank2 && x == 'X' = Just $ filterOnRankSecond (fromJust rank2) allhands
-                        | x == 'X' && y == 'X' = Just allhands
-                        | otherwise = Nothing
-                where   rank1 = rankFromChar x
-                        rank2 = rankFromChar y
-                        test = isJust rank1 && isJust rank2 && rank1 >= rank2
+handsFromRange (x:xs) | isJust rank1 = suitOrSecond rank1 xs
+                      | x == 'X' = wildCardSecond xs
+                      | otherwise = Nothing
+                      where rank1 = rankFromChar x
+
+suitOrSecond rank1 (x:xs) | test = Just $ filterOnRankSecond (fromJust rank2) $ filterOnRankFirst (fromJust rank1) allhands
+                          | x == 'X' = Just $ filterOnRankFirst (fromJust rank1) allhands
+                          where rank2 = rankFromChar x
+                                suit1 = suitFromChar x
+                                test = isJust rank1 && isJust rank2 && rank1 >= rank2 && xs == []
+
+wildCardSecond (x:xs) | isJust rank2 = Just $ filterOnRankSecond (fromJust rank2) allhands
+                      | x == 'X' = Just allhands
+                      where rank2 = rankFromChar x
