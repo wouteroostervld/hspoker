@@ -2,8 +2,8 @@ module HSPoker.Card where
 import Data.Maybe
 
 data Rank = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace  deriving (Enum, Eq, Ord, Show)
-data Suit = Clubs | Hearts | Diamonds | Spades deriving (Enum,Eq,Show)
-data Card = Card Rank Suit deriving (Eq, Show)
+data Suit = Clubs | Hearts | Diamonds | Spades deriving (Enum,Ord,Eq,Show)
+data Card = Card Rank Suit deriving (Eq, Ord, Show)
 rank (Card r _) = r
 suit (Card _ s) = s
 cards = [ Card r s | r <- [Two .. ], s <- [ Clubs .. ] ]
