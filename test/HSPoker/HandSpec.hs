@@ -31,9 +31,32 @@ spec = do
     describe "handsFromRange" $ do
         it "should return all the combinations for the string \"AK\"" $ do
             fmap (sort) (handsFromRange "AK") `shouldBe` Just (sort $ filterAllHands Ace King)
+
         it "should return all the combinations for the string \"AA\"" $ do
             fmap (sort) (handsFromRange "AA") `shouldBe` Just (sort $ filterAllHands Ace Ace)
 
         it "should return nothing for an illegal string \"gg\"" $ do
             handsFromRange "gg" `shouldBe` Nothing 
 
+        it "should return (4*51) - 6 hands for \"AX\"" $ do
+            -- minus 6 because eg. AcAh is equivalent of AhAc
+            length (fromJust (handsFromRange "AX")) `shouldBe` (4 * 51) - 6
+
+        it "should return (4*51) - 6 hands for \"X2\"" $ do
+            -- minus 6 because eg. 2c2h is equivalent of 2h2c
+            length (fromJust (handsFromRange "X2")) `shouldBe` (4 * 51) - 6
+
+        it "should return the same amount of hands for \"X8\" and \"8X\"" $ do
+            length (fromJust (handsFromRange "8X")) `shouldBe` length (fromJust (handsFromRange "X8"))
+
+        it "should return nothing for the illegal string \"1\"" $ do
+            handsFromRange "1" `shouldBe` Nothing
+
+        it "should return nothing for the illegal string \"\"" $ do
+            handsFromRange "" `shouldBe` Nothing
+
+        it "should have length (52*51)/2 for \"XX\"" $ do
+            length (fromJust $ handsFromRange "XX") `shouldBe` (( 52 * 51 ) `div` 2)
+
+--        it "should return (51) hands for \"AcX\"" $ do
+--            length (fromJust (handsFromRange "AcX")) `shouldBe` 51
