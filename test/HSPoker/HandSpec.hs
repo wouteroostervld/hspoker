@@ -66,3 +66,9 @@ spec = do
 
         it "should return Nothing for partial legal string \"Ag\"" $ do
             handsFromRange "Ag" `shouldBe` Nothing
+
+        it "should return Nothing for partial legal string \"AAg\"" $ do
+            handsFromRange "AAg" `shouldBe` Nothing
+
+        it "should return Nothing for partial legal string \"AgA\"" $ do
+            handsFromRange "AgA" `shouldBe` Nothing

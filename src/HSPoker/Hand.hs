@@ -38,4 +38,5 @@ secondRank hands (x:xs) | isJust rank2 = secondSuitOrEnd (filterOnRankSecond (fr
 
 secondSuitOrEnd hands [] = Just hands
 secondSuitOrEnd hands (x:xs) | xs == [] && isJust suit2 = Just $ filterOnSuitSecond (fromJust suit2) hands
+                             | otherwise = Nothing
                              where suit2 = suitFromChar x
