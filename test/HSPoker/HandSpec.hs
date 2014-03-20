@@ -11,7 +11,7 @@ import Data.List
 main :: IO()
 main = hspec spec
 
-filterAllHands r1 r2 = [ h | h <- allhands, rank (h!!0) == r1, rank (h!!1) == r2] 
+filterAllHands r1 r2 = [ h | h <- allhands, rank (h!!0) == r1, rank (h!!1) == r2]
 
 spec = do
     describe "handFromString" $ do
@@ -36,7 +36,7 @@ spec = do
             fmap (sort) (handsFromRange "AA") `shouldBe` Just (sort $ filterAllHands Ace Ace)
 
         it "should return nothing for an illegal string \"gg\"" $ do
-            handsFromRange "gg" `shouldBe` Nothing 
+            handsFromRange "gg" `shouldBe` Nothing
 
         it "should return (4*51) - 6 hands for \"AX\"" $ do
             -- minus 6 because eg. AcAh is equivalent of AhAc
@@ -58,5 +58,8 @@ spec = do
         it "should have length (52*51)/2 for \"XX\"" $ do
             length (fromJust $ handsFromRange "XX") `shouldBe` (( 52 * 51 ) `div` 2)
 
---        it "should return (51) hands for \"AcX\"" $ do
---            length (fromJust (handsFromRange "AcX")) `shouldBe` 51
+        it "should return [[Card Ace Spades, Card King Spades]] hands for \"AsKs\"" $ do
+            handsFromRange "AsKs" `shouldBe` Just [[Card Ace Spades, Card King Spades]]
+
+        it "should return 13*12/2 hands for \"XcXc\"" $ do
+            length (fromJust $ handsFromRange "XcXc") `shouldBe` ((13*12) `div` 2)

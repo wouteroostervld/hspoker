@@ -9,23 +9,32 @@ handFromString s | length cards == 2 = Just cards
 allhands = [ [c1,c2] | c1 <- cards, c2 <- cards, c1 > c2 ]
 
 filterOnRank i r l = filter (\h -> rank (h!!i) == r ) l
+filterOnSuit i r l = filter (\h -> suit (h!!i) == r ) l
 
 filterOnRankFirst r l = filterOnRank 0 r l
 filterOnRankSecond r l = filterOnRank 1 r l
+filterOnSuitFirst r l = filterOnSuit 0 r l
+filterOnSuitSecond r l = filterOnSuit 1 r l
 
 handsFromRange [] = Nothing
 handsFromRange (x:[]) = Nothing
-handsFromRange (x:xs) | isJust rank1 = suitOrSecond rank1 xs
-                      | x == 'X' = wildCardSecond xs
-                      | otherwise = Nothing
-                      where rank1 = rankFromChar x
+handsFromRange (x:xs) = firstRank (x:xs)
 
-suitOrSecond rank1 (x:xs) | test = Just $ filterOnRankSecond (fromJust rank2) $ filterOnRankFirst (fromJust rank1) allhands
-                          | x == 'X' = Just $ filterOnRankFirst (fromJust rank1) allhands
-                          where rank2 = rankFromChar x
-                                suit1 = suitFromChar x
-                                test = isJust rank1 && isJust rank2 && rank1 >= rank2 && xs == []
+firstRank (x:xs) | isJust rank1 = firstSuitOrSecondRank (filterOnRankFirst (fromJust rank1) allhands) xs
+                 | x == 'X' = firstSuitOrSecondRank allhands xs
+                 | otherwise = Nothing
+                 where rank1 = rankFromChar x
 
-wildCardSecond (x:xs) | isJust rank2 = Just $ filterOnRankSecond (fromJust rank2) allhands
-                      | x == 'X' = Just allhands
-                      where rank2 = rankFromChar x
+firstSuitOrSecondRank hands [] = Nothing
+firstSuitOrSecondRank hands (x:xs) | isJust suit1 = secondRank (filterOnSuitFirst (fromJust suit1) hands) xs
+                                   | otherwise = secondRank hands (x:xs)
+                                   where suit1 = suitFromChar x
+
+secondRank hands [] = Nothing
+secondRank hands (x:xs) | isJust rank2 = secondSuitOrEnd (filterOnRankSecond (fromJust rank2) hands) xs
+                        | x == 'X' = secondSuitOrEnd hands xs
+                        where rank2 = rankFromChar x
+
+secondSuitOrEnd hands [] = Just hands
+secondSuitOrEnd hands (x:xs) | xs == [] && isJust suit2 = Just $ filterOnSuitSecond (fromJust suit2) hands
+                             where suit2 = suitFromChar x
