@@ -63,3 +63,6 @@ spec = do
 
         it "should return 13*12/2 hands for \"XcXc\"" $ do
             length (fromJust $ handsFromRange "XcXc") `shouldBe` ((13*12) `div` 2)
+
+        it "should return Nothing for partial legal string \"Ag\"" $ do
+            handsFromRange "Ag" `shouldBe` Nothing

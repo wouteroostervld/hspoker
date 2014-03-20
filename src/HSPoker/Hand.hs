@@ -33,6 +33,7 @@ firstSuitOrSecondRank hands (x:xs) | isJust suit1 = secondRank (filterOnSuitFirs
 secondRank hands [] = Nothing
 secondRank hands (x:xs) | isJust rank2 = secondSuitOrEnd (filterOnRankSecond (fromJust rank2) hands) xs
                         | x == 'X' = secondSuitOrEnd hands xs
+                        | otherwise = Nothing
                         where rank2 = rankFromChar x
 
 secondSuitOrEnd hands [] = Just hands
