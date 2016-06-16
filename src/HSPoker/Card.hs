@@ -1,5 +1,6 @@
 module HSPoker.Card where
 
+import Control.Applicative
 import Data.Maybe
 import Data.List
 import System.Random
