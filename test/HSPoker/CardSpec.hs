@@ -1,3 +1,5 @@
+module HSPoker.CardSpec where
+
 import Test.Hspec
 import Test.QuickCheck
 import Control.Exception (evaluate)
@@ -5,7 +7,9 @@ import HSPoker.Card
 import Data.Maybe
 
 main :: IO()
-main = hspec $ do
+main = hspec $ spec
+
+spec = do
     describe "cards" $ do
         it "has length 52" $
             length cards `shouldBe` 52
@@ -56,15 +60,15 @@ main = hspec $ do
         
     describe "cardFromString" $ do
         it "should return correspondent card for string" $ do
-            map (fromJust . fst . cardFromString . showCard) cards `shouldBe` cards
+            map (fromJust . cardFromString . showCard) cards `shouldBe` cards
 
     describe "cardsFromString" $ do
         it "should return correspondent cards for string" $ do
-            fst ( cardsFromString ( concat ( map (showCard) cards ) ) ) `shouldBe`  cards
+            ( cardsFromString ( concat ( map (showCard) cards ) ) ) `shouldBe`  (Just cards)
 
         it "should be able to handle empty strings" $ do
-            cardsFromString "" `shouldBe` ( [], "" )
+            cardsFromString "" `shouldBe` (Just [])
             
         it "should be able to handle odd strings" $ do
-            cardsFromString "AcK" `shouldBe` ( [Card Ace Clubs], "K" )
+            cardsFromString "woot!woot!" `shouldBe` Nothing 
 
