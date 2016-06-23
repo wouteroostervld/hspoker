@@ -26,3 +26,8 @@ library
   exposed-modules:     HSPoker.Card 
   -- other-modules:       
   build-depends:       base >=4.6, random, random-shuffle
+
+executable pweb
+  main-is: Main.hs
+  hs-source-dirs: bin
+  build-depends: base, hspoker, scotty, safe

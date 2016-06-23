@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module HSPoker.Card where
 
 import Control.Applicative
@@ -85,10 +86,12 @@ comb n (x:xs) = (fmap (x:) (comb (n-1) xs)) ++ (comb n xs)
 newtype Hand = Hand [Card] deriving Show
 hands:: [Card] -> [Hand]
 hands cs = fmap ((Hand).sort) (comb 5 cs)
-look (Hand h) = h
+unHand (Hand h) = h
 
-hand:: [Card] -> Hand
-hand cs = last $ sort $ hands cs
+hand:: [Card] -> Maybe Hand
+hand [] = Nothing
+hand cs | hands cs == [] = Nothing
+        | otherwise = Just $ last $ sort $ hands cs
 
 groupByRank:: [Card] -> [(Int, Rank)]
 groupByRank cs = csByCount `zip` (fmap rank $ fmap head $ csByGroup) 
@@ -133,9 +136,20 @@ handRank (Hand h)
     | fmap fst ((sort.groupByRank) h) == [1,1,1,2] = OnePair
     | otherwise = HighCard
 
-criticalRanks:: Hand -> [Rank]
+criticalRanks:: Hand -> Maybe [Rank]
 criticalRanks (Hand h)
-    = fmap snd $ (reverse.sort.groupByRank) h
+    | notStraight = Just $ fmap snd $ (reverse.sort.groupByRank) h
+    | otherwise = Nothing
+        where notStraight = not $ handRank (Hand h) `elem` straights
+
+straights = [RoyalFlush, StraightFlush, Straight]
+streetRank:: Hand -> Maybe Rank
+streetRank h 
+    | isStraight && ranks == [Two, Three, Four, Five, Ace] = Just Five
+    | isStraight = Just $ maximum ranks
+    | otherwise = Nothing
+    where ranks = sort $ fmap rank $ unHand h
+          isStraight = handRank h `elem` straights
 
 instance Eq Hand where
     (==) (Hand h1) (Hand h2) 
@@ -147,14 +161,12 @@ instance Eq Hand where
 instance Ord Hand where
     compare h1 h2
         | hr1 /= hr2 = compare hr1 hr2
+        | hr1 == RoyalFlush = compare (streetRank h1) (streetRank h2)
+        | hr1 == StraightFlush = compare (streetRank h1) (streetRank h2)
+        | hr1 == Straight = compare (streetRank h1) (streetRank h2)
         | otherwise = compare (criticalRanks h1) (criticalRanks h2)
         where hr1 = handRank h1
               hr2 = handRank h2
 
 shuffledCards:: IO [Card]
 shuffledCards = shuffle' cards (length cards) <$> mkStdGen <$> randomIO
-
-main = do
-        cs <- shuffledCards
-        mapM_ print cs
-        
